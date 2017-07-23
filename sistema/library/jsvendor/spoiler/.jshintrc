@@ -1,0 +1,17 @@
+{
+  "browser" : true,
+  "eqeqeq"  : true,
+  "indent"  : 2,
+  "jquery"  : true,
+  "maxlen"  : 100,
+  "node"    : true,
+  "strict"  : true,
+  "trailing": true,
+  "undef"   : true,
+  "unused"  : true,
+  "quotmark": "double",
+  "globals": {
+    "define": true,
+    "require": true
+  }
+}

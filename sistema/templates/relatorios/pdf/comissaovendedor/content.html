@@ -1,0 +1,55 @@
+<style>
+    
+    table tbody tr td {border-bottom: 1px solid #000; font-size: 11px; padding: 5px 0 5px 0;}
+    table thead tr th {text-align: left; }
+    .totais {text-align: right; padding-right: 180px; margin-top: 60px;}
+    .totais span {font-weight: bold;}
+    
+    .assine {margin-top: 35px;}
+    .assine div {float: left; width: 50%; text-align: right; font-weight: bold;}
+    .assine div.linha { border-bottom: 1px solid #000; display: inline; width: 50%;}
+    
+    .observacao {margin-top: 10px;}
+    .observacao div {font-size: 10px;}
+
+</style>
+
+<body {comissaoBloqueada} >
+  
+ <table cellspacing="0" style="width: 100%;">
+     <thead>
+         <tr style="background-color: #9e9e9e; min-height: 50px;">
+             <th style="width: 15%;">Banco</th>
+             <th style="width: 10%;">Conv&ecirc;nio</th>
+             <th style="width: 10%;">Tabela</th>
+             <th style="width: 10%;">Opera&ccedil;&atilde;o</th>
+             <th style="width: 15%;">Nome</th>
+             <th style="width: 8%;">Prazo</th>
+             <th style="width: 8%;">Valor Parcela</th>
+             <th style="width: 10%;">Valor Contrato</th>
+             <th style="width: 8%;">% de Comiss&atilde;o</th>
+             <th style="width: 8%;">Valor da Comiss&atilde;o</th>
+        </tr>
+     </thead>
+     <tbody>
+          {content} 
+     </tbody>
+</table>
+
+
+<div class="totais">
+    <p><span>Total do valor dos contrato: </span>R$ {valorTotalContrato}</p>
+    <p><span>Total de comiss&atilde;o: </span>R$ {valorTotalComissao}</p>
+</div>
+
+<div class="assine">
+    <div>ASSINE AQUI:</div> <div class="linha">&nbsp;</div>
+</div>
+
+<div class="observacao">
+    <p>OBSERVA&Ccedil;&Atilde;O</p>
+    <div>{observacao}</div>
+</div>
+</body>
+
+    

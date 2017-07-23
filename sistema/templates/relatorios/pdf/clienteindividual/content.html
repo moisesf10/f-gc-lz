@@ -1,0 +1,89 @@
+<style>
+    div.title {text-align: center;}
+    
+    div.nome, div.endereco-p1, div.endereco-p2, div.telefones, div.contasBancarias {margin-top: 8px;}
+    div.nome div, div.endereco-p1 div, div.endereco-p2 div, div.telefones div, div.contasBancarias div {float: left;  font-size: 13px;}
+    
+    div.nome div span, div.endereco-p1 div span, div.endereco-p2 div span, div.telefones div span, div.contasBancarias div span {font-weight: bold;}
+    
+    
+    .contasBancarias {margin-top: 8px;}
+    
+    div.telefones-tittle {font-weight: bold;}
+    
+    table {margin-top: 20px;}
+    table tbody tr td {border-bottom: 1px solid #000; font-size: 11px;}
+    table thead tr th {text-align: left; color: #FFF; }
+    
+    .nota {font-size: 11px;}
+    
+    
+    
+</style>
+
+<div class="title">Dados do Cliente</div>
+<div class="nome">
+    <div style="width: 70%"><span>Nome: </span>{nomeCliente}</div>
+    <div style="width: 30%"><span>CPF: </span>{cpfCliente}</div>
+</div>
+
+<div class="endereco-p1">
+    <div style="width: 45%"><span>Endereço: </span>{endereco}</div>
+    <div style="width: 25%"><span>N&ordm;: </span>{numeroEndereco}</div>
+    <div style="width: 30%"><span>Bairro: </span>{bairro}</div>
+</div>
+
+<div class="endereco-p2">
+    <div style="width: 30%"><span>CEP: </span>{cep}</div>
+    <div style="width: 40%"><span>Cidade: </span>{cidade}</div>
+    <div style="width: 25%"><span>Estado: </span>{uf}</div>
+</div>
+
+<div class="telefones telefones-tittle">
+    <div style="width: 30%">Telefone</div>
+    <div style="width: 30%">Refer&ecirc;ncia</div>
+</div>
+
+{telefones}
+
+<p><b>Conta Banc&aacute;ria</b></p>
+{contasBancarias}
+
+
+
+
+<table cellspacing="0" style="width: 100%;">
+     <thead>
+         <tr style="background-color: #9e9e9e; min-height: 50px;">
+             <th style="width: 15%;">Entidade</th>
+             <th style="width: 10%;">Contrato</th>
+             <th style="width: 10%;">Banco</th>
+             <th style="width: 10%;">V. Líquido</th>
+             <th style="width: 10%;">V. Total</th>
+             <th style="width: 10%;">Opera&ccedil;&atilde;o</th>
+              <th style="width: 8%;">Prazo</th>
+             <th style="width: 8%;">Valor Parcela</th>
+             <th style="width: 9%;">Seguro</th>
+             <th style="width: 8%;">Data</th>
+             <th style="width: 8%;">Status</th>
+        </tr>
+     </thead>
+     <tbody>
+          {tabela} 
+     </tbody>
+</table>
+
+<p class="nota">
+**Cliente est&aacute; ciente de que os valores s&atilde;o aproximados, podendo ocorrer altera&ccedil;&otilde;es devido an&aacute;lise junto ao banco. Novos valores serão confirmados via telefone
+</p>
+
+
+<p>observa&ccedil;&otilde;es</p>
+<div class="observacoes">
+{observacoes}
+</div>
+
+
+
+
+

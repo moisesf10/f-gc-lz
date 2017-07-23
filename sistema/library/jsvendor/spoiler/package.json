@@ -1,0 +1,32 @@
+{
+  "name": "jquery-spoiler",
+  "version": "1.3.0",
+  "author": "Triangle717 (http://le717.github.io) and Jarred Ballard (http://jarred.io/)",
+  "description": "Minimal, lightweight jQuery spoiler plugin",
+  "license": "MIT",
+  "homepage": "http://le717.github.io/jquery-spoiler",
+  "main": "jquery.spoiler.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/le717/jquery-spoiler.git"
+  },
+  "bugs": { "url": "https://github.com/le717/jquery-spoiler/issues" },
+  "keywords": [
+    "jquery",
+    "spoiler",
+    "spoilers",
+    "plugin"
+  ],
+  "files": [
+    "jquery.spoiler.js",
+    "jquery.spoiler.min.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": { "jquery": ">=1.10.0" },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.6.0"
+  }
+}
