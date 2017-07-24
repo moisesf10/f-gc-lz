@@ -8,7 +8,7 @@ define('DS', DIRECTORY_SEPARATOR);
 
 //PHPEXCel
 //include 'library\php\PHPExcel\PHPExcel.php';
-include 'library\php\PHPExcel\PHPExcel\Autoloader.php';
+include 'library/php/PHPExcel/PHPExcel/Autoloader.php';
 //include (\Application::getIndexPath(). '/library/php/dompdf/autoload.inc.php');
 
 
@@ -484,7 +484,7 @@ class Application
 			if (! in_array($key, $headersExclude))
 			{
 				$v = strtolower(str_replace('HTTP_','',$key));
-				$headers[$v] = strtolower($value);
+				$headers[$v] = (! is_string($value)) ? $value : strtolower($value);
 
 			}
 

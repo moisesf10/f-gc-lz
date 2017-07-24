@@ -720,7 +720,7 @@ class Contrato implements MySqlError
                 \Application::setMysqlLogQuery('Classe Contrato; Método atualizar - delete comissões; Mysql '. $connection->error);
                 $this->mysqlError = $connection->errno;
                 $return = false;
-                break;
+               
              }
 
              if (is_array($dados['comissoes']))

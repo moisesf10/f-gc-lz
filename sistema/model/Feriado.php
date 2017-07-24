@@ -207,7 +207,7 @@ class Feriado implements MySqlError
                     \Application::setMysqlLogQuery('Classe Perfil; Método definirPerfilUsuario - Delete; Mysql '. $connection->error); 
                     $this->errorCode = $connection->errno;
                     $return = false;
-                    break;
+                 
                  }
              
              
