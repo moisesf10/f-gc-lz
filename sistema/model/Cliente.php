@@ -847,7 +847,7 @@ class Cliente implements MySqlError
                          \Application::setMysqlLogQuery('Classe Cliente; Método salvarNb; Mysql '. $connection->error); 
                          $this->errorCode = $connection->errno;
                          $return = false;
-                        break;
+                      
                     }
                 
 
