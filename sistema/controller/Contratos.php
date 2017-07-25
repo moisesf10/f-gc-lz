@@ -9,7 +9,7 @@ namespace Gauchacred\controller;
 use Gauchacred\library\php\Utils as Utils;
 use Gauchacred\model\Tabela as Tabela;
 use Gauchacred\model\Cliente as Cliente;
-use Gauchacred\model\subtabela as Subtabela;
+use Gauchacred\model\Subtabela as Subtabela;
 use Gauchacred\model\GrupoUsuario as GrupoUsuario;
 use Gauchacred\model\Contrato as Contrato;
 use Gauchacred\model\Entidade as Entidade;

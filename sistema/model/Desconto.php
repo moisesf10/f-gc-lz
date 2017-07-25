@@ -554,7 +554,6 @@ VALUES (?, ?, ?, ?)";
                       $flag = false;
                       \Application::setMysqlLogQuery('Classe Desconto; Método salvarRelatorio - encerrar adiantamentos; Mysql '. $connection->error);
                        $this->errorCode = $connection->errno;
-                      break;
               }
            }
            else

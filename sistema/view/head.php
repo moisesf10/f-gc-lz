@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ga&uacute;cha Cred - Promotora</title>
-    
+ 
 <link rel="stylesheet" type="text/css" href="/library/jsvendor/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/library/jsvendor/nanoscroller/nanoscroller.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 <link rel="stylesheet" href="/library/jsvendor/font-awesome/css/font-awesome.min.css" />
-
+<link rel="shortcut icon" href="/images/favicon.ico" /> 
     
 <link rel="stylesheet" type="text/css" href="/library/css/invoice-print.css">
 <link rel="stylesheet" type="text/css" href="/library/css/theme.css">
