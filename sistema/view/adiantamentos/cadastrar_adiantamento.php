@@ -107,7 +107,7 @@ if (\Application::getUrlParams(0) != null && $adiantamento == null)
                     <button type="button" class="mb-xs mt-xs mr-xs btn btn-danger" onclick="salvar()">Salvar</button>
                 <?php } ?>
 
-                <?php if (\Application::isAuthorized('Adiantamentos' , 'adiantamentos_cadastro', 'remover')  && isset($adiantamento['valorTotalPago'])  && $adiantamento['valorTotalPago'] == 0  ) { ?>
+                <?php if (\Application::isAuthorized('Adiantamentos' , 'adiantamentos_cadastro', 'remover')  && isset($adiantamento['valorTotalPago'])  ) { ?>
                   <button type="button" class="mb-xs mt-xs mr-xs btn btn-grey" onclick="excluir()">Excluir</button>
                 <?php } ?>
 
