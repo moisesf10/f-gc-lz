@@ -260,8 +260,8 @@ class Adiantamentos extends Controller
         $dataInicio = (!empty($_REQUEST['datainicio'])) ? $_REQUEST['datainicio'] : null;
         $dataFim = (!empty($_REQUEST['datafim'])) ? $_REQUEST['datafim'] : null;
 
-        $dataInicio = Utils::formatStringDate($dataInicio, 'Y-m-d', 'd/m/Y');
-        $dataFim = Utils::formatStringDate($dataFim, 'Y-m-d', 'd/m/Y');
+        $dataInicio = Utils::formatStringDate($dataInicio, 'd/m/Y', 'Y-m-d');
+        $dataFim = Utils::formatStringDate($dataFim, 'd/m/Y', 'Y-m-d');
 
 
         $params = array('idusuario' => $idUsuario, 'limit' => 1000000, 'nomecliente' => $nomeCliente, 'datainicio' => $dataInicio, 'datafim' => $dataFim );

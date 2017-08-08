@@ -21,6 +21,7 @@ use Gauchacred\model\OperacaoSubtabela as OperacaoSubtabela;
 use Gauchacred\model\Meta as Meta;
 use Gauchacred\model\Cliente as Cliente;
 use Gauchacred\model\SubstatusContrato;
+use Gauchacred\model\DespesasPagar;
 /**
  * @author moises
  * @version 1.0
@@ -1566,6 +1567,162 @@ class Administracao extends Controller
         echo json_encode($json);
         exit;
         
+    }
+    
+    
+    
+    /**
+    * DESPESAS A PAGAR 
+    **/
+    
+    public function despesasPagar()
+	{
+        
+        if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'ler')  
+                    && ! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'escrever')
+           )
+            \Application::print404();
+        
+        $this->setView('despesaspagar/index');
+      
+        
+        /* $banco = new Banco();
+        $result = $banco->listarBancos();
+        if ($result !== false)
+            $this->setParams('bancos', $result);
+        
+         $entidade = new Entidade();
+         $result = $entidade->listarEntidades();
+        if ($result !== false)
+            $this->setParams('entidades', $result);
+        
+        
+        $id = (\Application::getUrlParams(0) === null) ? null : \Application::getUrlParams(0);
+        
+        $roteiro = new Roteiro();
+         $result = $roteiro->listarRoteiros($id);
+        if ($result !== false)
+            $this->setParams('roteiro', $result);
+            */
+        
+        
+     
+        $this->showContents();
+	}
+    
+    public function cadastrarDespesasPagar()
+	{
+        
+        if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'ler')  
+                    && ! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'escrever')
+           )
+            \Application::print404();
+        
+        $this->setView('despesaspagar/cadastrar_despesas');
+      
+        
+        
+        $id = (\Application::getUrlParams(0) === null) ? null : \Application::getUrlParams(0);
+        $params = array('id' => $id);
+        $despesas = new DespesasPagar();
+         $result = $despesas->listarDespesas($params);
+        if (isset($result[0]) && $id !== null)
+            $this->setParams('despesa', $result[0]);
+            
+     
+        $this->showContents();
+	}
+    
+    public function jsonListarDespesasPagar()
+    {
+        if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'ler')  
+                    && ! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'escrever')
+           )
+            \Application::print404();
+        
+        
+        $descricao = (! empty($_REQUEST['descricao'])) ? $_REQUEST['descricao'] : null;
+        $dataCriacaoInicio = (!empty($_REQUEST['datainiciocriacao'])) ? Utils::formatStringDate($_REQUEST['datainiciocriacao'], 'd/m/Y', 'Y-m-d') : null;
+        $dataCriacaoFim = (!empty($_REQUEST['datafimcriacao'])) ? Utils::formatStringDate($_REQUEST['datafimcriacao'], 'd/m/Y', 'd/m/Y') : null;
+        $dataVencimentoInicio = (!empty($_REQUEST['datainiciovencimento'])) ? Utils::formatStringDate($_REQUEST['datainiciovencimento'], 'd/m/Y', 'Y-m-d') : null;
+        $dataVencimentoFim = (!empty($_REQUEST['datafimvencimento'])) ? Utils::formatStringDate($_REQUEST['datafimvencimento'], 'd/m/Y', 'd/m/Y') : null;
+        //$dataPagamentoInicio = (!empty($_REQUEST['datacriacaoinicio'])) ? Utils::formatStringDate($_REQUEST['datacriacaoinicio'], 'd/m/Y', 'Y-m-d') : null;
+       // $dataPagamentoFim = (!empty($_REQUEST['datacriacaofim'])) ? Utils::formatStringDate($_REQUEST['datacriacaofim'], 'd/m/Y', 'd/m/Y') : null;
+        
+        
+        
+        $params = array('limit' => 999999, 'descricao' => $descricao, 'datavencimentoinicio' => $dataVencimentoInicio, 'datavencimentofim' => $dataVencimentoFim,
+                       'datacriacaoinicio' => $dataCriacaoInicio, 'datacriacaofim' => $dataCriacaoFim);
+        
+        $despesas = new DespesasPagar();
+        
+        $result = $despesas->listarDespesas($params);
+       
+        if (is_array($result))
+            echo json_encode($result);
+        else
+            echo json_encode(array());
+        
+        
+        exit;
+    }
+    
+    
+     public function salvarDespesasPagar()
+    {
+
+      if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'escrever'))
+          \Application::print404();
+
+      
+      $descricao = (! empty($_REQUEST['descricao'])) ? $_REQUEST['descricao'] : null;
+      $vencimento = (! empty($_REQUEST['vencimento'])) ? Utils::formatStringDate($_POST['vencimento'], 'd/m/Y', 'Y-m-d') : null;
+      $pagamento = (! empty($_REQUEST['pagamento'])) ? Utils::formatStringDate($_POST['pagamento'], 'd/m/Y', 'Y-m-d') : null;
+      $valorDevido = (! empty($_REQUEST['valordevido'])) ? $_REQUEST['valordevido'] : null;
+      $valorPago = (! empty($_REQUEST['valorpago'])) ? $_REQUEST['valorpago'] : null;
+      $id = (! empty( $_REQUEST['id'] )) ? $_REQUEST['id'] : null;
+         
+      $params = array(
+        'descricao' => $descricao,
+        'vencimento' => $vencimento,
+        'pagamento' => $pagamento,
+        'valordevido'  => $valorDevido,
+        'valorpago' => $valorPago,
+        'id' => $id
+      ); 
+        
+
+      $despesas = new DespesasPagar();
+      $result = $despesas->salvar($params);
+      if ($result === false)
+          $response = array('success' => false, 'message' => 'Não foi possível salvar o registro. Erro '. $despesas->getMysqlError());
+       else
+           $response = array('success' => true, 'message' => '', 'id' => $result);
+
+      echo json_encode($response);
+      exit;
+    }
+    
+    public function excluirDespesasPagar()
+    {
+      if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'despesas_pagar', 'remover'))
+        \Application::print404();
+
+        $id = (! empty($_REQUEST['id'])) ? $_REQUEST['id'] : null;
+        $despesas = new DespesasPagar();
+        $result = $despesas->excluir($id);
+
+        if ($result == false)
+        {
+            $response['success'] = false;
+            $response['message'] = 'Não foi possível remover o registro. Código: ' . $despesas->getMysqlError();
+        }else {
+            $response['success'] = true;
+            $response['message'] = 'Registro removido com sucesso';
+        }
+
+        echo json_encode($response);
+        exit;
     }
     
 

@@ -111,6 +111,9 @@ $pontosTroca = $this->getParams('pontostroca');
 
 $descontosDevidos = $this->getParams('descontosdevidos');
 $comissaoLoja = $this->getParams('comissaoloja');
+
+$despesasPagarHoje = $this->getParams('despesaspagarhoje');
+
 //echo '<pre>'; var_dump($contratosPagos); exit;
 
 
@@ -783,8 +786,8 @@ if (isset($metaMesUsuario['valor']) && $metaMesUsuario > 0   )
     
     
 <?php
-    if ( \Application::isAuthorized('Home' , 'paginainicial_comissao_loja', 'ler')
-            ||  \Application::isAuthorized('Home' , 'paginainicial_comissao_loja', 'escrever'))
+    if ( \Application::isAuthorized('Home' , 'paginainicial_despesas_pagar_hoje', 'ler')
+            ||  \Application::isAuthorized('Home' , 'paginainicial_despesas_pagar_hoje', 'escrever'))
     {   ?>
     
     <div class="col-md-3 col-lg-3 col-xl-3">
@@ -798,14 +801,14 @@ if (isset($metaMesUsuario['valor']) && $metaMesUsuario > 0   )
                       </div>
                       <div class="widget-summary-col">
                           <div class="summary">
-                              <h4 class="title">Comissão Loja + Descontos (Mês)</h4>
+                              <h4 class="title">Despesas a Pagar Hoje</h4>
                               <div class="info">
-                                  <strong class="amount"><?php echo Utils::numberToMoney(($valorDescontoUsuario + $comissaoLoja) ); ?></strong>
+                                  <strong class="amount"><?php echo Utils::numberToMoney(($despesasPagarHoje) ); ?></strong>
 
                               </div>
                           </div>
                           <div class="summary-footer">
-                              PODE SER DESCONTADO PARCIALMENTE
+                              TODAS AS DESPESAS COM VENCIMENTO HOJE
                           </div>
                       </div>
                   </div>

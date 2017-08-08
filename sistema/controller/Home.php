@@ -187,6 +187,17 @@ class Home extends Controller
         $result = $gadGets->obterSomatorioDescontosDevidos($_SESSION['userid']);
         if (is_array($result))
             $this->setParams('descontosdevidos', $result);
+        
+        //*****
+        /** Adicionados em 08/08/2017
+        */
+        $result = $gadGets->despesasPagarHoje();
+        if ($result !== false)
+            $this->setParams('despesaspagarhoje', $result);
+        
+        
+        
+        
 
 
         $this->showContents();

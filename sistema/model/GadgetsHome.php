@@ -903,6 +903,44 @@ class GadgetsHome implements MySqlError
     }
     
     
+    public function despesasPagarHoje()
+    {
+        
+       
+        
+        $return = false;
+        
+        $connection = \Application::getNewDataBaseInstance();
+        $query = "
+               select sum(d.valordevido) from despesasapagar d where d.vencimento = cast(now()  as date)
+        ";
+       
+        
+         if ($stm = $connection->prepare($query))
+        {
+            //$stm->bind_param('i',  $idUsuario);
+            if ($stm->execute())
+            {
+                $stm->bind_result($valor);
+                
+                
+                 while ($stm->fetch()) {
+                     $return = $valor;
+                              
+                 }
+            }
+            
+        }
+         else
+        {
+            \Application::setMysqlLogQuery('Classe GadgetsHome; Método despesasPagarHoje; Mysql '. $connection->error); 
+             $this->mysqlError = $connection->errno;
+        }
+        return $return;
+        
+    }
+    
+    
     
     
     

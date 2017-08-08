@@ -1,72 +1,82 @@
 <?php
 $usuarios = $this->getParams('usuarios');
 ?>
-<section class="panel">
-        <header class="panel-heading">
-            <h2 class="panel-title">Adiantamentos</h2>
-        </header>
-        <div class="panel-body">
+<form id="form1">
+    <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Despesas a Pagar</h2>
+            </header>
+            <div class="panel-body">
 
-
-        <div class="panel-body">
-            <div class="form-group">
-                <label class="col-md-3 control-label">Nome do Usuário</label>
-                <div class="col-md-4">
-                    <select data-plugin-selectTwo class="form-control " id="usuario" name="usuario">
-                        <optgroup label="Selecione o nome do usuário">
-                            <option></option>
-                            <?php
-                                if (is_array($usuarios))
-                                    foreach($usuarios as $i => $value)
-                                        echo '<option value="'. $value['id'] . '">'. ucwords(strtolower($value['nome'])) . '</option>';
-                            ?>
-
-                        </optgroup>
-
-                    </select>
-                </div>
-            </div>
-
-        </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <label class="col-md-3 control-label">Data de lançamento do desconto</label>
-                <div class="col-md-4">
-                    <div class="input-daterange input-group" data-plugin-datepicker>
-                        <span class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                        </span>
-                        <input type="text" class="form-control" name="datainicio" id="datainicio">
-                        <span class="input-group-addon">Até</span>
-                        <input type="text" class="form-control" name="datafim" id="datafim">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Criado em</label>
+                    <div class="col-md-4">
+                        <div class="input-daterange input-group" data-plugin-datepicker>
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input type="text" class="form-control" name="datainiciocriacao" id="datainiciocriacao">
+                            <span class="input-group-addon">Até</span>
+                            <input type="text" class="form-control" name="datafimcriacao" id="datafimcriacao">
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Vence em</label>
+                    <div class="col-md-4">
+                        <div class="input-daterange input-group" data-plugin-datepicker>
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <input type="text" class="form-control" name="datainiciovencimento" id="datainiciovencimento">
+                            <span class="input-group-addon">Até</span>
+                            <input type="text" class="form-control" name="datafimvencimento" id="datafimvencimento">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Descrição da Despesa</label>
+                    <div class="col-md-4">
+                        <input type="text" id="descricao" name="descricao" class="form-control">
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            <div class="panel-body">
+                <?php if (\Application::isAuthorized('Administracao' , 'despesas_pagar', 'escrever')) { ?>
+                    <button type="button" class="mb-xs mt-xs mr-xs btn btn-grey" onclick="document.location='/administracao/cadastrar-despesas-pagar'">Adicionar Despesa</button>
+                <?php } ?>
+                <button type="button" class="mb-xs mt-xs mr-xs btn btn-danger" onclick="pesquisar()">Pesquisar</button>
+            </div>
+
         </div>
 
+    </section>
+</form>
 
-
-
-
-        <div class="panel-body">
-            <?php if (\Application::isAuthorized('Adiantamentos' , 'adiantamentos_cadastro', 'escrever')) { ?>
-                <button type="button" class="mb-xs mt-xs mr-xs btn btn-grey" onclick="document.location='/adiantamentos/cadastrar-adiantamento'">Adicionar Adiantamento</button>
-            <?php } ?>
-            <button type="button" class="mb-xs mt-xs mr-xs btn btn-danger" onclick="pesquisar()">Pesquisar</button>
-        </div>
-
-    </div>
-
-</section>
 
 <table class="display" id="datatable"  cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>#</th>
-            <th>Nome</th>
-            <th>Usuário a ser Descontado</th>
-            <th>Parcelas</th>
-            <th>Data Inicial do Desconto</th>
+            <th>Descrição</th>
+            <th>Criado em</th>
+            <th>Vence em</th>
+            <th>Valor Devido</th>
+            <th>Valor Pago</th>
             <th>Acesar</th>
 
 
@@ -76,8 +86,6 @@ $usuarios = $this->getParams('usuarios');
 
     </tbody>
 </table>
-
-
 
 <!-- Modal Progress -->
 <div id="modalSuccess" class="modal-block modal-block-success mfp-hide">
@@ -164,10 +172,6 @@ $.getScript( "/library/jsvendor/datatables/js/jquery.dataTables.min.js", functio
 
 function pesquisar()
 {
-    var usuario = $('#usuario').val();
-    var dataInicio = $('#datainicio').val();
-    var dataFim = $('#dataFim').val();
-    
     $.magnificPopup.open({ 
         items: { src: '#modalSuccess'},
         type: 'inline',
@@ -179,43 +183,43 @@ function pesquisar()
     // Carrega os Adiantamentos
         $.ajax({
               type: "POST",
-              url:  '/adiantamentos/listar-adiantamentos/',
-              data: '&usuario=' + usuario + '&datainicio=' + dataInicio + '&datafim=' + dataFim +'&limit=1000000' ,
+              url:  '/administracao/json-listar-despesas-pagar/',
+              data: $('#form1').serialize() +'&limit=999999' ,
               dataType: 'json',
               cache: false,
               success: function(json){
-               
+                $.magnificPopup.close();
                 table.clear().draw();
-                var valor = 0;
-                  var total = 0;
+               
                   for (var i in json)
                   {
-
 
                       table.row.add([
                         json[i].id,
                         json[i].descricao,
-                        json[i].nomeUsuario,
-                        (json[i].qtdParcelas == 0) ? '%' : json[i].qtdParcelas,
                         json[i].created,
-                        '<a href="/adiantamentos/cadastrar-adiantamento/'+ json[i].id + '"><i class="material-icons">&#xE254;</i></a>'
+                        json[i].vencimento,
+                        formatReal(json[i].valorDevido),
+                        formatReal(json[i].valorPago),
+                        '<a href="/administracao/cadastrar-despesas-pagar/'+ json[i].id + '"><i class="material-icons">&#xE254;</i></a>'
                       ]);
 
                   }
 
                   table.draw(false);
 
-                $.magnificPopup.close();
-
 
             },
             error: function(r){
-             $.magnificPopup.close();    
-              alert(r.responseText);
+                $.magnificPopup.close();
+                alert(r.responseText);
             }
         });
 }
 
-
+function formatReal(n) {
+    n = parseFloat(n);
+    return "R$ " + n.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, "$1.");
+}
 
 </script>
