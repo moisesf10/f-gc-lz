@@ -1,0 +1,69 @@
+<style>
+        div.tittle {border: 1px solid #000; background-color: #757575; text-align: center; font-size: 22px; font-weight: bold; padding: 5; margin-left: 3px; margin-right: 3px;}
+    div.usuario {border: 1px solid #000;  font-size: 16px;  padding: 2; color: #fff;  background-color: #757575; margin-top: 20px;}
+    
+    table {margin-top: 30px;}
+    table tbody tr td {border-bottom: 1px solid #000; font-size: 13px;}
+    table thead tr th {text-align: left; font-size: 14px; color: #FFF; line-height: 40px;}
+    
+    .totais {margin-top: 80px; font-size: 22px;}
+    .totais  {text-align: right; margin-right: 40px; }
+    
+    
+    .itens-float-left {float: left; width: 49%; text-align: center;}
+    
+    
+    .content {font-size: 22px; padding: 10px 0px 10px 0px;}
+    .border-all {border: 2px solid #d1d1d1;}
+    .col-md-4 {margin-left: 0.5%;}
+    .text-center {text-align: center;}
+    .bg-whrite {background-color: #fff; }
+    
+    hr {margin-top: 5%;}
+</style>
+
+<div class="row tittle">
+    RELAT&Oacute;RIO DE GASTOS {dataInicial} a {dataFinal}
+</div>
+
+<div class="row content">
+    <div class="col-md-4" style="float: left; width: 32%; background-color: #DCDCDC;">
+        <div class="border-all" style="text-align: center ">DESPESAS</div>
+        <div class="itens-float-left border-all bg-whrite">DESCRIÇÃO</div>
+        <div class="itens-float-left border-all bg-whrite">VALOR</div>
+        {despesas}
+    </div>
+    
+    <div class="col-md-4" style="float: left; width: 32%; background-color: #DCDCDC;">
+        <div class="border-all" style="text-align: center ">COMISSÕES PAGAS</div>
+        <div class="itens-float-left border-all bg-whrite">VENDEDOR</div>
+        <div class="itens-float-left border-all bg-whrite">VALOR</div>
+        {descontos}
+    </div>
+    
+    <div class="col-md-4" style="float: left; width: 32%; background-color: #DCDCDC;">
+        <div class="border-all" style="text-align: center ">IMPOSTO</div>
+        <div class="itens-float-left border-all bg-whrite">VALOR</div>
+        <div class="itens-float-left border-all bg-whrite">TOTAL</div>
+        <div class=" border-all text-center">R$ {valorImposto}</div>
+      
+        
+        <div class="border-all" style="text-align: center ">COMISSÃO BRUTA</div>
+        <div class="itens-float-left border-all bg-whrite">VALOR</div>
+        <div class="itens-float-left border-all bg-whrite">TOTAL</div>
+        <div class="border-all text-center">R$ {totalComissao}</div>
+        
+    </div>
+</div>
+
+<hr />
+
+<div class="totais">
+    <P><b>TOTAL</b></P>
+    <div class="totais-content">
+	<b>BRUTO</b>: R$ {vBruto} <br />
+   <b>DESPESAS</b>: R$ {vDespesas} <br />
+   <b>COMISSÕES:</b> R$ {vComissoes}<br />
+    <b>IMPOSTO:</b> R$ {vImposto}<br />
+    </div>
+</div>

@@ -755,5 +755,141 @@ class Relatorio implements MySqlError
         
     }
     
+    /*
+    * Relatório de Gastos
+    */
+    
+    public function totaisRelatorioGastos($params = array())
+    {
+        
+        
+        extract($params, EXTR_OVERWRITE);
+
+        $datainicio =  (! empty($datainicio)) ? $datainicio : '1';
+        $datafim =  (! empty($datafim)) ? $datafim : '1';
+        $nomebanco =  (! empty($nomebanco)) ? $nomebanco : '%';
+        $nomeoperacao =  (! empty($nomeoperacao)) ? $nomeoperacao : '%';
+        
+        
+        $return = false;
+        
+        $connection = \Application::getNewDataBaseInstance();
+        
+      
+            $query = "
+                  select
+                    ifnull(sum(round(((c.comissaototal/100) * c.valortotal  ),2)),0) as 'comissaototal',
+                    ifnull(sum(round(((c.comissaototal/100) * c.valortotal * (c.percentualimposto / 100)   ),2)),0) as 'valorimposto'
+
+                    from contratos c
+                    where c.datapagamento between ? and ?
+                    and c.nomebancocontrato like ? and c.nomeoperacao like ?
+
+            ";
+        
+       
+       
+         if ($stm = $connection->prepare($query))
+        {
+            $stm->bind_param('ssss', $datainicio, $datafim, $nomebanco, $nomeoperacao);
+            if ($stm->execute())
+            {
+                $stm->bind_result($comissaoTotal, $totalImpostos);
+                
+                $return = array();
+                 if ($stm->fetch()) {
+                     
+                     
+                     $return['comissaoBruta'] = $comissaoTotal;
+                     $return['impostos'] = $totalImpostos;
+                     
+                     
+                     array_push($return, $v);   
+                     
+                     
+                 }
+            }else
+            {
+                \Application::setMysqlLogQuery('Classe Relatorios; Método totaisRelatorioGastos; Mysql '. $connection->error); 
+                 $this->mysqlError = $connection->errno;
+            }
+            
+        }
+         else
+        {
+            \Application::setMysqlLogQuery('Classe Relatorios; Método totaisRelatorioGastos; Mysql '. $connection->error); 
+             $this->mysqlError = $connection->errno;
+        }
+        return $return;
+        
+        
+    }
+    
+    
+    public function listarDescontosSumarizados($params = array())
+    {
+        
+        
+        extract($params, EXTR_OVERWRITE);
+
+        $datainicio =  (! empty($datainicio)) ? $datainicio : '1';
+        $datafim =  (! empty($datafim)) ? $datafim : '1';
+        
+        
+        
+        $return = false;
+        
+        $connection = \Application::getNewDataBaseInstance();
+        
+      
+            $query = "
+                   select
+                    u.nome, sum(d.valordescontos) as 'valordescontado'
+                    from descontos d
+                      inner join usuarios u on u.id = d.usuarios_id
+
+                    where d.created between ? and ADDDATE( ?, INTERVAL 1 DAY)
+                    group by u.id
+
+            ";
+        
+       
+       
+         if ($stm = $connection->prepare($query))
+        {
+            $stm->bind_param('ss', $datainicio, $datafim);
+            if ($stm->execute())
+            {
+                $stm->bind_result($nome, $valor);
+                
+                $return = array();
+                 while ($stm->fetch()) {
+                     
+                     $v = array();
+                     $v['nome'] = $nome;
+                     $v['valorDescontado'] = $valor;
+                     
+                     
+                     array_push($return, $v);   
+                     
+                     
+                 }
+            }else
+            {
+                \Application::setMysqlLogQuery('Classe Relatorios; Método ListarDescontosSumarizado; Mysql '. $connection->error); 
+                 $this->mysqlError = $connection->errno;
+            }
+            
+        }
+         else
+        {
+            \Application::setMysqlLogQuery('Classe Relatorios; Método ListarDescontosSumarizado; Mysql '. $connection->error); 
+             $this->mysqlError = $connection->errno;
+        }
+        return $return;
+        
+        
+    }
+    
     
 }

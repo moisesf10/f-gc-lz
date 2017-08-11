@@ -21,6 +21,7 @@ use \Gauchacred\model\OperacaoSubtabela as OperacaoSubtabela;
 use \Gauchacred\model\Relatorio as Relatorio;
 use \Gauchacred\model\Cliente as Cliente;
 use \Gauchacred\model\Contrato as Contrato;
+use \Gauchacred\model\DespesasPagar;
 
 //use \library\php\dompdf\src\Autoloader as DompdfAutoloader;
 use \Mpdf\Mpdf as Mpdf;
@@ -1768,6 +1769,134 @@ class Relatorios extends Controller
         $objWriter->save('php://output');
         
                 
+        
+    }
+    
+    
+    
+    /**
+    * DESPESAS A PAGAR
+    */
+        
+    public function despesasPagar()
+	{
+        
+        if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'relatorio_despesas_pagar', 'ler')  
+                    && ! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'relatorio_despesas_pagar', 'escrever')
+           )
+            \Application::print404();
+        
+        $this->setView('relatorios/despesaspagar/index');
+      
+        
+        
+        $banco = new Banco();
+          $result = $banco->listarBancos();
+          if ($result !== false)
+              $this->setParams('bancos', $result);
+          
+          $operacao = new Operacao();
+          $result = $operacao->listarOperacoes();
+          if ($result !== false)
+              $this->setParams('operacoes', $result);
+            
+     
+        $this->showContents();
+	}
+    
+    
+    public function gerarDespesasPagar()
+    {
+         if (! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'relatorio_despesas_pagar', 'ler')  
+                    && ! \Application::isAuthorized(ucfirst(strtolower(\Application::getNameController())) , 'relatorio_despesas_pagar', 'escrever')
+           )
+            \Application::print404();
+        
+        
+        $nomeBanco = (empty($_POST['banco'])) ? null : $_POST['banco'];
+        $nomeOperacao = (empty($_POST['operacao'])) ? null : $_POST['operacao'];
+        $dataInicial =   (empty($_POST['datainicial'])) ? null :  Utils::formatStringDate($_POST['datainicial'], 'd/m/Y', 'Y-m-d'); 
+        $dataFinal = (empty($_POST['datafinal'])) ? null : Utils::formatStringDate($_POST['datafinal'], 'd/m/Y', 'Y-m-d'); 
+        
+        $params = array(
+            'datavencimentoinicio' => $dataInicial,
+            'datavencimentofim' => $dataFinal
+        );
+        
+        $despesasPagar = new DespesasPagar();
+        $despesas = $despesasPagar->listarDespesas($params);
+        
+        
+        $params = array(
+            'datainicio' => $dataInicial,
+            'datafim' => $dataFinal,
+            'nomebanco' => $nomeBanco,
+            'nomeoperacao' => $nomeOperacao
+        );
+        $rel = new relatorio();
+        $descontos = $rel->listarDescontosSumarizados($params);
+        
+        $totais = $rel->totaisRelatorioGastos($params);
+        
+        // obtem HTML das despesas
+        $vDespesas = 0;
+        $textoDespesas = '';
+        if (is_array($despesas))
+            foreach($despesas as $i => $despesa)
+            {
+                $textoDespesas .=  '<div class="itens-float-left border-all">'. $despesa['descricao'] .'</div><div class="itens-float-left border-all">R$ '. Utils::numberToMoney( $despesa['valorDevido']) .'</div>';
+                $vDespesas += $despesa['valorDevido'];
+            }
+        
+        // obtem HTML dos descontos
+        $vComissoes = 0;
+        $textoDescontos = '';
+        if (is_array($descontos))
+            foreach($descontos as $i => $desconto)
+            {
+                $textoDescontos .=  '<div class="itens-float-left border-all">'. $desconto['nome'] .'</div><div class="itens-float-left border-all">R$ '. Utils::numberToMoney( $desconto['valorDescontado']) .'</div>';
+                $vComissoes +=  $desconto['valorDescontado'];
+            }
+        
+        
+        $vDespesas = Utils::numberToMoney($vDespesas);
+        $vComissoes = Utils::numberToMoney($vComissoes);
+        
+        $htmlHeader =  file_get_contents(\Application::getIndexPath(). '/templates/relatorios/pdf/despesaspagar/header.html');
+        $htmlContent = file_get_contents(\Application::getIndexPath(). '/templates/relatorios/pdf/despesaspagar/content.html');
+             
+        
+        $dataInicio = Utils::formatStringDate($dataInicial, 'Y-m-d', 'd/m/Y');
+        $dataFim =  Utils::formatStringDate($dataFinal, 'Y-m-d', 'd/m/Y');
+        
+    
+       
+        // $valorComissao = Utils::numberToMoney($valorComissao);
+        
+         $htmlContent = str_replace(array(
+             '{descontos}', '{dataInicial}', '{dataFinal}', '{despesas}', '{valorImposto}', '{totalComissao}', '{vBruto}', '{vImposto}', '{vDespesas}', '{vComissoes}'
+            ), array(
+                 $textoDescontos, $dataInicio, $dataFim, $textoDespesas, Utils::numberToMoney( $totais['impostos']), Utils::numberToMoney( $totais['comissaoBruta']), Utils::numberToMoney( $totais['comissaoBruta']), Utils::numberToMoney( $totais['impostos']), $vDespesas, $vComissoes
+            ), $htmlContent
+         );
+
+
+
+
+         $mpdf = new Mpdf(array('format' => 'A3-L', 'margin_top' => 75, 'margin_left' => 5, 'margin_right' => 5));
+         $mpdf->SetTitle('Comissões do Grupo');
+        
+         // obtem o CSS
+       // $stylesheet = file_get_contents(\Application::getIndexPath() . '/library/jsvendor/bootstrap/css/bootstrap.css');
+        
+        $mpdf->SetHTMLHeader($htmlHeader);
+        
+        
+        
+       // $mpdf->WriteHTML($stylesheet,1);
+         $mpdf->WriteHTML($htmlContent);
+         $mpdf->Output();
+        
         
     }
     
